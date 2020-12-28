@@ -18,6 +18,5 @@ print(f"generating {args.n} {args.d}-dimensional vectors...")
 with open(args.output, "w") as f:
     for i in tqdm(range(0, args.n)):
         vec = np.random.random(args.d)
-        vec = vec / np.linalg.norm(vec)
         vec_string = np.array2string(vec, separator=", ", max_line_width=np.inf)
         f.write(vec_string[1 : len(vec_string) - 1] + "\n")
