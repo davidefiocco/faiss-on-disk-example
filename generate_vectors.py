@@ -3,7 +3,7 @@ import argparse
 import numpy as np
 from tqdm import tqdm
 
-parser = argparse.ArgumentParser(description='Write vectors to csv file on disk.')
+parser = argparse.ArgumentParser(description="Write vectors to csv file on disk.")
 
 parser.add_argument("--n", type=int, help="Number of vecs to generate", default=50000)
 parser.add_argument("--d", type=int, help="Vector dimensions", default=100)
