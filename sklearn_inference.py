@@ -18,5 +18,5 @@ np.random.seed(42)
 print(f"getting nearest neighbors for {args.d} vectors...")
 for i in range(args.iter):
     q_vec = np.random.random(args.d)
-    result = neigh.kneighbors([q_vec])[1][0]
+    result = neigh.kneighbors([q_vec], return_distance = False)
     print(result)
