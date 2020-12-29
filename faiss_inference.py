@@ -14,8 +14,8 @@ parser.add_argument("--iter", type=int, help="Inference cycles", default=100)
 args = parser.parse_args()
 
 
-def find_neighbors_faiss(xq):
-    return index.search(xq, 5)
+def find_neighbors_faiss(q_vec):
+    return index.search(q_vec, 5)
 
 
 index = faiss.read_index("faiss/populated.index")
@@ -24,7 +24,7 @@ index.make_direct_map()
 
 np.random.seed(42)
 for i in range(args.iter):
-    xq = np.random.random(args.d).reshape(1, -1).astype(np.float32)
-    # xq = index.reconstruct(i).reshape(1,-1).astype(np.float32)
-    D, I = find_neighbors_faiss(xq)
+    q_vec = np.random.random(args.d).reshape(1, -1).astype(np.float32)
+    # q_vec = index.reconstruct(i).reshape(1,-1).astype(np.float32)
+    D, I = find_neighbors_faiss(q_vec)
     print(I[0])
