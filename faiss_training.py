@@ -19,10 +19,9 @@ Path("faiss").mkdir(parents=True, exist_ok=True)
 index = faiss.index_factory(args.d, f"IVF100,Flat")
 print("training faiss index...")
 
-batch = np.loadtxt(args.input, delimiter=",", max_rows=args.batch_size).astype(
-    np.float32
-)
-index.train(batch)
+first_vecs = np.loadtxt(args.input, delimiter=",", max_rows=args.batch_size).astype(np.float32)
+
+index.train(first_vecs)
 faiss.write_index(index, "faiss/trained.index")
 
 n_batch = 0

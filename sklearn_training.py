@@ -12,11 +12,11 @@ parser.add_argument("--input", type=str, help="Input filename", default="vectors
 args = parser.parse_args()
 
 print("loading input vectors...")
-batch = np.loadtxt(args.input, delimiter=",").astype(np.float32)
+vecs = np.loadtxt(args.input, delimiter=",").astype(np.float32)
 neigh = NearestNeighbors(n_neighbors=5)
 
 print("fitting model...")
-neigh.fit(batch)
+neigh.fit(vecs)
 
 print("dumping model...")
 # create sklearn directory if it doesn't exist
