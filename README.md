@@ -1,28 +1,29 @@
 # faiss-sklearn-numpy-NN-search
 
-The code here allows to generate a set of vectors in csv format and then experiment with different ways to search for nearest neighbors using different libraries (`numpy`, `sklearn`, `faiss`), and experiment with differences between them. The `faiss` example is meant to work also with a number of vectors not fitting into RAM!
+The code here allows to search for nearest neighbors on a benchmark set using different libraries (`numpy`, `sklearn`, `faiss`), and experiment with differences between them. The `faiss` example is meant to work also with a number of vectors not fitting into RAM.
 
 ## Running the examples
 
 To run the examples, on a machine running Docker, run:
 
 ```bash
-docker build -t faisssklearnnumpynnsearch:latest .
-docker run --name nn -d faisssklearnnumpynnsearch:latest
+docker build -t nnsearch:latest .
+docker run --name nn -d nnsearch:latest
 docker exec -it nn bash
 cd workspace
 ```
 
-and then generate the vectors in the container with 
+and then get and inflate [1M SIFT vectors](http://corpus-texmex.irisa.fr/) (a benchmark for nearest-neighbors search) with:
 
 ```bash
-# beware that the vector generation performed here is not very fast...
-python generate_vectors.py --n 5000000
+wget ftp://ftp.irisa.fr/local/texmex/corpus/sift.tar.gz
+tar -xzvf sift.tar.gz 
 ```
 
 To perform nearest neighbors search with `numpy`, run:
 
 ```bash
+cd src
 python numpy_inference.py
 ```
 
@@ -40,7 +41,7 @@ python faiss_training.py
 python faiss_inference.py
 ```
 
-when done with runs, `make clean` should clean up all files created on the way.
+when done with runs, `make clean` in the root folder should clean up all files created on the way.
 
 ## Profiling
 
@@ -48,6 +49,7 @@ To monitor memory usage during script execution one can use `memory_profiler`:
 
 ```bash
 # requires to have run python faiss_training.py before
-mprof run faiss_inference.py 
+mprof run faiss_inference.py
+# generate memory usage plot vs time
 mprof plot -o faiss_inference
 ```

@@ -5,9 +5,9 @@ from faiss.contrib.ondisk import merge_ondisk
 import faiss
 
 print("loading query vectors...")
-q_vecs = fvecs_read("sift/sift_query.fvecs")
+q_vecs = fvecs_read("../sift/sift_query.fvecs")
 
-index = faiss.read_index("faiss/populated.index")
+index = faiss.read_index("../faiss/populated.index")
 index.nprobe = 16
 index.make_direct_map()
 

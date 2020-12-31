@@ -2,9 +2,9 @@ import numpy as np
 from utils import fvecs_read
 
 print("loading base vectors...")
-S_vecs = fvecs_read("sift/sift_base.fvecs")
+S_vecs = fvecs_read("../sift/sift_base.fvecs")
 print("loading query vectors...")
-q_vecs = fvecs_read("sift/sift_query.fvecs")
+q_vecs = fvecs_read("../sift/sift_query.fvecs")
 
 def find_neighbors(S_vecs, q_vec, k=5):
     distances = np.linalg.norm(S_vecs - q_vec, axis = 1)
