@@ -1,19 +1,14 @@
-import argparse
 from pathlib import Path
-
-import numpy as np
 from joblib import dump
 from sklearn.neighbors import NearestNeighbors
+import numpy as np
+from utils import fvecs_read
 
-parser = argparse.ArgumentParser(description="Train a scikit-learn model to perform nearest-neighbor search.")
+print("loading base vectors...")
+S_vecs = fvecs_read("sift/sift_base.fvecs")
+k = 5
 
-parser.add_argument("--input", type=str, help="Input filename", default="vectors.csv")
-
-args = parser.parse_args()
-
-print("loading input vectors...")
-S_vecs = np.loadtxt(args.input, delimiter=",").astype(np.float32)
-neigh = NearestNeighbors(n_neighbors=5)
+neigh = NearestNeighbors(n_neighbors=k)
 
 print("fitting model...")
 neigh.fit(S_vecs)

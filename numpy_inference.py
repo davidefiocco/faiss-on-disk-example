@@ -1,29 +1,16 @@
-import argparse
-
 import numpy as np
+from utils import fvecs_read
 
-parser = argparse.ArgumentParser(
-    description="Perform nearest-neighbor search with numpy."
-)
-
-parser.add_argument("--d", type=int, help="Vector dimensions", default=100)
-parser.add_argument("--input", type=str, help="Input filename", default="vectors.csv")
-parser.add_argument("--iter", type=int, help="Inference cycles", default=100)
-
-args = parser.parse_args()
-
-print("loading input vectors...")
-S_vecs = np.loadtxt(args.input, delimiter=",").astype(np.float32)
-
+print("loading base vectors...")
+S_vecs = fvecs_read("sift/sift_base.fvecs")
+print("loading query vectors...")
+q_vecs = fvecs_read("sift/sift_query.fvecs")
 
 def find_neighbors(S_vecs, q_vec, k=5):
     distances = np.linalg.norm(S_vecs - q_vec, axis = 1)
     return np.argpartition(distances, range(0, k))[:k]
 
-
-np.random.seed(42)
-print(f"getting nearest neighbors for {args.d} vectors...")
-for i in range(args.iter):
-    q_vec = np.random.random(args.d)
-    result = find_neighbors(S_vecs, q_vec)
-    print(result)
+print(f"getting nearest neighbors for {q_vecs.shape[0]} vectors...")
+for i in range(q_vecs.shape[0]):
+    indices = find_neighbors(S_vecs, q_vecs[i])
+    print(indices)

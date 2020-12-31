@@ -1,30 +1,18 @@
-import argparse
 import sys
-
+from utils import fvecs_read
 import numpy as np
 from faiss.contrib.ondisk import merge_ondisk
-
 import faiss
 
-parser = argparse.ArgumentParser(description="Perform nearest-neighbor search with faiss.")
-
-parser.add_argument("--d", type=int, help="Vector dimensions", default=100)
-parser.add_argument("--iter", type=int, help="Inference cycles", default=100)
-
-args = parser.parse_args()
-
-
-def find_neighbors_faiss(q_vec):
-    return index.search(q_vec, 5)
-
+print("loading query vectors...")
+q_vecs = fvecs_read("sift/sift_query.fvecs")
 
 index = faiss.read_index("faiss/populated.index")
 index.nprobe = 16
 index.make_direct_map()
 
-np.random.seed(42)
-for i in range(args.iter):
-    q_vec = np.random.random(args.d).reshape(1, -1).astype(np.float32)
-    # q_vec = index.reconstruct(i).reshape(1,-1).astype(np.float32)
-    D, I = find_neighbors_faiss(q_vec)
-    print(I[0])
+np.set_printoptions(threshold=q_vecs.shape[0])
+
+print(f"getting nearest neighbors for {q_vecs.shape[0]} vectors...")
+distances, indices = index.search(q_vecs, 5)
+print(indices)

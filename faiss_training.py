@@ -1,49 +1,33 @@
-import argparse
 from pathlib import Path
 import numpy as np
 from faiss.contrib.ondisk import merge_ondisk
 from tqdm import tqdm
 import faiss
+from utils import fvecs_read
 
-parser = argparse.ArgumentParser(description="Train a faiss model to perform nearest-neighbor search.")
-
-parser.add_argument("--input", type=str, help="Input filename", default="vectors.csv")
-parser.add_argument("--d", type=int, help="Vector dimensions", default=100)
-parser.add_argument("--batch_size", type=int, help="Size of batch to train faiss with", default=10000)
-
-args = parser.parse_args()
+print("loading input vectors...")
+S_vecs = fvecs_read("sift/sift_base.fvecs")
+batch_size = 100000
 
 # create faiss directory if it doesn't exist
 Path("faiss").mkdir(parents=True, exist_ok=True)
 
-index = faiss.index_factory(args.d, f"IVF100,Flat")
+index = faiss.index_factory(S_vecs.shape[1], f"IVF100,Flat")
 print("training faiss index...")
 
-first_vecs = np.loadtxt(args.input, delimiter=",", max_rows=args.batch_size).astype(np.float32)
-
-index.train(first_vecs)
+index.train(S_vecs[0:batch_size])
 faiss.write_index(index, "faiss/trained.index")
 
 n_batch = 0
-while True:
+while n_batch*batch_size < S_vecs.shape[0]:
     index = faiss.read_index("faiss/trained.index")
-    batch = np.loadtxt(
-        args.input,
-        delimiter=",",
-        skiprows=n_batch * args.batch_size,
-        max_rows=args.batch_size,
-    ).astype(np.float32)
-    if len(batch) == 0:
-        break
-    else:
-        index.add_with_ids(
-            batch, np.arange(n_batch * args.batch_size, (n_batch + 1) * args.batch_size)
-        )
-        print(
-            f"write block_{n_batch}.index with {n_batch*args.batch_size} as starting index"
-        )
-        faiss.write_index(index, f"faiss/block_{n_batch}.index")
-        n_batch += 1
+    index.add_with_ids(S_vecs[n_batch * batch_size:(n_batch + 1) * batch_size], np.arange(n_batch * batch_size, (n_batch + 1) * batch_size))
+    print(
+        f"write block_{n_batch}.index with {n_batch*batch_size} as starting index"
+    )
+    faiss.write_index(index, f"faiss/block_{n_batch}.index")
+    n_batch += 1
+
 
 print("loading trained index")
 # construct the output index

@@ -1,22 +1,14 @@
-import argparse
-
-import numpy as np
 from joblib import load
 from sklearn.neighbors import NearestNeighbors
+import numpy as np
+from utils import fvecs_read
 
-parser = argparse.ArgumentParser(description="Perform nearest-neighbor search with scikit-learn.")
-
-parser.add_argument("--d", type=int, help="Vector dimensions", default=100)
-parser.add_argument("--iter", type=int, help="Inference cycles", default=100)
-
-args = parser.parse_args()
+print("loading query vectors...")
+q_vecs = fvecs_read("sift/sift_query.fvecs")
 
 print("loading sklearn model...")
 neigh = load("sklearn/nn")
 
-np.random.seed(42)
-print(f"getting nearest neighbors for {args.d} vectors...")
-for i in range(args.iter):
-    q_vec = np.random.random(args.d)
-    result = neigh.kneighbors([q_vec], return_distance = False)
-    print(result)
+print(f"getting nearest neighbors for {q_vecs.shape[0]} vectors...")
+result = neigh.kneighbors(q_vecs, return_distance = False)
+print(result)
