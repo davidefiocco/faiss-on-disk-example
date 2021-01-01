@@ -6,6 +6,8 @@ import faiss
 
 print("loading query vectors...")
 q_vecs = fvecs_read("../sift/sift_query.fvecs")
+# in case you need to find vectors in the index:
+# q_vec = index.reconstruct(i).reshape(1,-1).astype(np.float32)
 
 index = faiss.read_index("../faiss/populated.index")
 index.nprobe = 16
