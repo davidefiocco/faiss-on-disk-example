@@ -1,4 +1,4 @@
-# faiss-sklearn-numpy-NN-search
+# from-numpy-to-faiss-NN-search
 
 The code here allows to search for nearest neighbors on a benchmark set using different libraries (`numpy`, `sklearn`, `faiss`), and experiment with differences between them. The `faiss` example is meant to work also with a number of vectors not fitting into RAM.
 
