@@ -1,6 +1,6 @@
 # faiss-on-disk-example
 
-This repo contains code to run `faiss` to search for neighbors in a dataset not fitting into RAM.
+This repo contains code to run `faiss` to search for nearest neighbors in a dense vector dataset not fitting into RAM.
 
 ## Running the examples
 
@@ -20,7 +20,7 @@ wget ftp://ftp.irisa.fr/local/texmex/corpus/gist.tar.gz
 tar -xzvf gist.tar.gz 
 ```
 
-To perform nearest neighbors search with `numpy` (this can fail on machines not having 8+GB of RAM for the process), run:
+To perform nearest neighbors search with `numpy` (this can fail on machines not having 8GB+ of RAM for the process), run:
 
 ```bash
 cd src
