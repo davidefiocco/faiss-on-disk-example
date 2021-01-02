@@ -1,2 +1,2 @@
 clean:
-	rm -rf sift faiss sklearn ./src/*.dat ./src/*.png *.tar.gz
+	rm -rf sift faiss ./src/*.dat ./src/*.png *.tar.gz

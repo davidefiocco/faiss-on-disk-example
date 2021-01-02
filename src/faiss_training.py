@@ -1,39 +1,38 @@
 from pathlib import Path
+
+import faiss
 import numpy as np
 from faiss.contrib.ondisk import merge_ondisk
-from tqdm import tqdm
-import faiss
-from utils import fvecs_read
 
-print("loading input vectors...")
-S_vecs = fvecs_read("../sift/sift_base.fvecs")
-batch_size = 100000
+from utils import fvecs_read
 
 # create faiss directory if it doesn't exist
 Path("../faiss").mkdir(parents=True, exist_ok=True)
 
-index = faiss.index_factory(S_vecs.shape[1], f"IVF100,Flat")
-print("training faiss index...")
+print("loading input vectors...")
+xb = fvecs_read("../gist/gist_base.fvecs")
 
-index.train(S_vecs[0:batch_size])
+index = faiss.index_factory(xb.shape[1], f"IVF4000,Flat")
+
+batch_size = 100000
+
+print("training faiss index...")
+index.train(xb[0:batch_size])
 faiss.write_index(index, "../faiss/trained.index")
 
-n_batch = 0
-while n_batch*batch_size < S_vecs.shape[0]:
+n_batches = xb.shape[0] // batch_size
+for i in range(n_batches):
     index = faiss.read_index("../faiss/trained.index")
-    index.add_with_ids(S_vecs[n_batch * batch_size:(n_batch + 1) * batch_size], np.arange(n_batch * batch_size, (n_batch + 1) * batch_size))
-    print(
-        f"write block_{n_batch}.index with {n_batch*batch_size} as starting index"
+    index.add_with_ids(
+        xb[i * batch_size : (i + 1) * batch_size],
+        np.arange(i * batch_size, (i + 1) * batch_size),
     )
-    faiss.write_index(index, f"../faiss/block_{n_batch}.index")
-    n_batch += 1
+    print(f"writing block_{i}.index with {i*batch_size} as starting index")
+    faiss.write_index(index, f"../faiss/block_{i}.index")
 
-
-print("loading trained index")
 # construct the output index
 index = faiss.read_index("../faiss/trained.index")
-
-block_fnames = [f"../faiss/block_{b}.index" for b in range(n_batch)]
+block_fnames = [f"../faiss/block_{b}.index" for b in range(n_batches)]
 
 merge_ondisk(index, block_fnames, "../faiss/merged_index.ivfdata")
 

@@ -1,5 +1,5 @@
 .devcontainer
 *.tar.gz
-sift
+gist
 faiss
-sklearn
+.vscode
