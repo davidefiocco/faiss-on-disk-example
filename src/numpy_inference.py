@@ -1,6 +1,6 @@
 import numpy as np
 
-from utils import fvecs_read
+from utils import fvecs_read, ivecs_read
 
 print("loading base vectors...")
 xb = fvecs_read("../gist/gist_base.fvecs")
@@ -19,9 +19,5 @@ for i in range(xq.shape[0]):
     indices[i, :] = find_neighbors(xb, xq[i])
 
 # Simple benchmark of the quality of the search
-from utils import ivecs_read
-import numpy as np
-
 iqt = ivecs_read("../gist/gist_groundtruth.ivecs")
-
 print("Top1 accuracy on the 1-NN search: ", np.mean(indices[:, 0] == iqt[:, 0]))
