@@ -1,1 +1,5 @@
 .devcontainer
+*.tar.gz
+gist
+faiss
+.vscode
