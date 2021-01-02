@@ -1,6 +1,6 @@
 # faiss-on-disk-example
 
-This repo contains code to run `faiss` to search for nearest neighbors in a dense vector dataset not fitting into RAM.
+This repo contains example code to run [`faiss`](https://github.com/facebookresearch/faiss) to search for nearest neighbors in a dense vector dataset not fitting into RAM.
 
 ## Running the examples
 
