@@ -1,10 +1,10 @@
 # faiss-on-disk-example
 
-This repo contains example code to run [`faiss`](https://github.com/facebookresearch/faiss) to search for nearest neighbors in a dense vector dataset not fitting into RAM, as described in a [blogpost](https://davidefiocco.github.io/nearest-neighbor-search-with-faiss/).
+This repo contains example code to run [`faiss`](https://github.com/facebookresearch/faiss) to search for nearest neighbors in a dense vector dataset not fitting into RAM (see [blogpost](https://davidefiocco.github.io/nearest-neighbor-search-with-faiss/)).
 
 ## Running the examples
 
-To run the examples, on a machine running Docker, run:
+To run the example, on a machine running Docker, run:
 
 ```bash
 docker build -t nnsearch:latest .
@@ -13,7 +13,7 @@ docker exec -it nn bash
 cd workspace
 ```
 
-and then get and inflate [1M GIST vectors](http://corpus-texmex.irisa.fr/) (a benchmark for vector nearest-neighbors search) with:
+and then get and inflate [1M GIST vectors](http://corpus-texmex.irisa.fr/) (a benchmark dataset for vector nearest-neighbors search) with:
 
 ```bash
 wget ftp://ftp.irisa.fr/local/texmex/corpus/gist.tar.gz
@@ -34,11 +34,11 @@ python faiss_training.py
 python faiss_inference.py
 ```
 
-when done with runs, `make clean` in the root folder should clean up all files created on the way.
+when done with runs, `make clean` in the root folder should clean up all files created along the way.
 
 ## Profiling
 
-To monitor memory usage during script execution one can use `memory_profiler`:
+To monitor memory usage during script execution one can use [`memory_profiler`](https://pypi.org/project/memory-profiler/):
 
 ```bash
 # requires to have run python faiss_training.py before
