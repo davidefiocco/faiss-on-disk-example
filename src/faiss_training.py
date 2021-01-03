@@ -12,7 +12,7 @@ Path("../faiss").mkdir(parents=True, exist_ok=True)
 print("loading input vectors...")
 xb = fvecs_read("../gist/gist_base.fvecs")
 
-index = faiss.index_factory(xb.shape[1], f"IVF4000,Flat")
+index = faiss.index_factory(xb.shape[1], "IVF4000,Flat")
 
 batch_size = 100000
 
