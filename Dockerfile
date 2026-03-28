@@ -1,13 +1,12 @@
-FROM continuumio/miniconda3
+FROM python:3.12-slim
 
-RUN apt-get install make
-
-# install faiss for cpu use
-RUN conda install faiss-cpu -c pytorch
-
-RUN conda install isort black memory_profiler matplotlib
+RUN apt-get update && apt-get install -y --no-install-recommends make wget && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN mkdir /workspace
 COPY . /workspace
+WORKDIR /workspace
+
+RUN pip install --no-cache-dir -r requirements.txt
 
 ENTRYPOINT ["tail", "-f", "/dev/null"]

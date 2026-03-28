@@ -1,6 +1,5 @@
 import faiss
 import numpy as np
-from faiss.contrib.ondisk import merge_ondisk
 
 from utils import fvecs_read, ivecs_read
 

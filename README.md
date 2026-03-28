@@ -42,7 +42,7 @@ To monitor memory usage during script execution one can use [`memory_profiler`](
 
 ```bash
 # requires to have run python faiss_training.py before
-mprof run faiss_inference.py
+mprof run python faiss_inference.py
 # generate memory usage plot vs time
-mprof plot -o faiss_inference
+mprof plot -o faiss_inference.png
 ```

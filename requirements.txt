@@ -1,0 +1,4 @@
+faiss-cpu==1.13.2
+numpy==2.4.3
+memory_profiler==0.61.0
+matplotlib==3.10.8
